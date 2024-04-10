@@ -1,0 +1,121 @@
+ I cover three different ways of installing Linux
+and step you through each process:
+■ Installing from a Live CD — A Linux Live CD is a single, read-only disk that contains
+everything you need to start a Linux operating system. With the Live CD, you can totally
+ignore your computer's hard disk; in fact, you can run a Live CD on a system with no
+hard disk. Once you are running the CD live, some Live CDs enable you to launch an
+application that permanently installs the contents of the Live CD to your hard disk
+■ Installing from an installation DVD — An installation DVD that is available with
+Fedora, RHEL, and other Linux distributions offers more fl exible ways of installing
+Linux. In particular, instead of just copying the whole Live CD contents to your
+computer, with an installation DVD you can choose exactly which software package you
+want. The second installation procedure I show in this chapter steps you through an
+installation process from a Red Hat Enterprise Linux 6 installation DVD.
+■ Installing in the enterprise — Sitting in front of a computer and clicking through
+installation questions isn't too inconvenient if you are installing a single system
+what if you need to install dozens or hundreds of Linux systems? What if you
+want to install those systems in particular ways that need to be repeated over
+multiple installations? The last section of this chapter describes effi cient ways
+of installing multiple Linux systems, using network installation features and
+kickstart fi les.
+
+
+
+The following procedure steps you through the process of installing the Fedora Live CD
+described in Chapter 1 to your local computer. 194-198
+
+
+Installing Red Hat Enterprise Linux from Installation
+Media 199 - 202
+
+Installing Linux in the Enterprise
+If you were managing dozens, hundreds, even thousands of Linux systems in a large
+enterprise, it would be terribly ineffi cient to have to go to each computer to type and click
+through each installation. Fortunately, with Red Hat Enterprise Linux and other distributions, you can automate installation in such a way that all you need to do is turn on a
+computer and boot from the computer's network interface card to get your desired Linux
+installation
+
+Installing Linux to run virtually
+Using virtualization technology, such as KVM, VMWare, VirtualBox, or Xen, you can
+confi gure your computer to run multiple operating systems simultaneously. Typically,
+you have a host operating system running (such as your Linux or Windows desktop),
+and then confi gure guest operating systems to run within that environment.
+
+Partitioning hard drives
+The hard disk (or disks) on your computer provide the permanent storage area for your
+data fi les, applications programs, and the operating system itself. Partitioning is the act
+of dividing a disk into logical areas that can be worked with separately.
+
+Understanding different partition types
+Many Linux distributions give you the option of selecting different partition types when
+you partition your hard disk during installation. Partition types include:
+■ Linux partitions — Use this option to create a partition for an ext2, ext3, or ext4
+fi lesystem type that is added directly to a partition on your hard disk (or other
+storage medium).
+■ LVM partitions — Create an LVM partition if you plan to create or add to an
+LVM volume group. LVMs give you more fl exibility in growing, shrinking, and
+moving partitions later than regular partitions do.
+■ RAID partitions — Create two or more RAID partitions to create a RAID array.
+These partitions should be on separate disks to create an effective RAID array.
+RAID arrays can help improve performance, reliability, or both as those features
+relate to reading, writing, and storing your data.
+■ Swap partitions — Create a swap partition to extend the amount of virtual
+memory available on your system.
+
+Reasons for different partitioning schemes
+Different opinions exist as to how to divide up a hard disk. Here are some issues to
+consider:
+■ Do you want to install another operating system? If you want Windows on
+your computer along with Linux, you need at least one Windows (Win95, FAT16,
+VFAT, or NTFS type), one Linux (Linux ext4), and usually one Linux swap
+partition.
+■ Is it a multiuser system? If you are using the system yourself, you probably don’t
+need many partitions. One reason for partitioning an operating system is to keep
+the entire system from running out of disk space at once. That also serves to
+put boundaries on what an individual can use up in his or her home directory
+(although disk quotas provide a more refi ned way of limiting disk use).
+■ Do you have multiple hard disks? You need at least one partition per hard
+disk. If your system has two hard disks, you may assign one to / and one to
+/home (if you have lots of users) or /var (if the computer is a server sharing
+lots of data). With a separate /home partition, you can install another Linux
+system in the future without disturbing your home directories (and presumably
+all or most of your user data).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

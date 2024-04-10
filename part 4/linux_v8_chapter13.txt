@@ -1,0 +1,176 @@
+As the name implies, servers exist to serve. The data they serve can include web pages, fi les,
+database information, e-mail, and lots of other types of content. As a server administrator, some
+of the additional challenges to your system administration skills include the following
+
+■ Remote access—To use a desktop system, you typically sit at its console. Server systems,
+by contrast, tend to be housed in racks in climate-controlled environments under lock
+and key. More often than not, once the physical computers are in place, most administration of those machines is done using remote access tools. Often, no graphical interface
+is available, so you must rely on command-line tools to do such things as remote login,
+remote copying, and remote execution. The most common of these tools are built on the
+Secure Shell (SSH) facility.
+■ Diligent security—To be useful, a server needs to be able to accept requests
+for content from remote users and systems. Unlike desktop systems, which can
+simply close down all network ports that allow incoming requests for access, a
+server must make itself vulnerable by allowing some access to its ports
+■ Continuous monitoring— Because you don’t want to sit next to each server and continuously monitor it personally, you can confi gure tools to monitor each server, gather log
+messages, and even forward suspicious messages to an e-mail account of your
+choice. You can enable system activity reporters to gather data around the clock
+on CPU usage, memory usage, network activity, and disk access.
+
+Starting with Server Administration
+Whether you are installing a fi le server, web server, or any of the other server facilities
+available with Linux systems, many of the steps required for getting the server up and
+running are the same. Where server setup diverges is in the areas of confi guration
+and tuning. In later chapters, I describe specifi c servers and how they differ.
+
+Step 1: Install the server
+Sometimes multiple software packages associated with a particular type of server are
+gathered together in Package Groups (sometimes called Package Collections). Other
+times, you just need to install the server packages you want individually. Here are some
+server package categories in Fedora and some of the packages available in each category:
+page 308
+
+Step 2: Confi gure the server
+Most server software packages are installed with a default confi guration that leans more
+toward security than immediate full use. Here are some things to think about when you
+set out to confi gure a server
+Most Linux servers are confi gured using plain text fi les in the /etc directory (or subdirectories). Often there is a primary confi guration fi le; sometimes there is a related confi guration
+directory in which fi les ending in .conf can be pulled into the main confi guration fi le.
+The httpd package (Apache web server) is an example of a server package that has
+a primary confi guration fi le and a directory where other confi guration fi les can be
+dropped in and be included with the service. The main confi guration fi le in Fedora and
+RHEL is /etc/httpd/conf/httpd.conf. The confi guration directory is /etc/httpd
+/conf.d.
+Checking the default configuration
+Most server software packages in Fedora and RHEL are installed with minimal confi guration and lean more toward being secure than totally useful out of the box.
+
+Step 3: Start the server
+Most services you install in Linux are confi gured to start up when the system boots,
+then run continuously, listening for requests for its service, until the system is shut
+down. There are two major facilities for managing services: systemd (used now by
+Ubuntu and Fedora) and System V init scripts (used by Red Hat Enterprise Linux at
+least through RHEL 6.x).
+Regardless of which facility is used on your Linux system, it is your job to do such things
+as set whether or not you want the service to come up when the system boots and to
+start, stop, and reload the service as needed (possibly to load new confi guration fi les or
+temporarily stop access to the service). Commands for doing these tasks are described in
+Chapter 15, “Starting and Stopping Services”.
+
+Most, but not all, services are implemented as daemon processes. Here are a few things
+you should know about those processes:
+
+User and group permissions—Daemon processes often run as users and groups
+other than root. For example, httpd runs as apache and ntpd runs as the ntp
+user. 
+Daemon confi guration fi les—Often, a service will have a confi guration fi le for
+the daemon stored in the /etc/sysconfig directory. This is different than the
+service confi guration fi le in that its job is often just to pass arguments to the
+server process itself, rather than confi gure the service.
+Port numbers—Packets of data go to and from your system over network interfaces
+through ports for each supported protocol (UDP, TCP, ICMP, and so on). Most standard services have specifi c port numbers the daemons listen to and that clients connect to. Unless you are trying to hide the location of a service, you typically don’t
+change the ports that a daemon process listens on.
+
+Step 4: Secure the server
+Opening your system to allow remote users to access it over the network is not a decision you should take lightly. There are crackers all over the world running programs to
+scan for vulnerable servers they can take over for their data or their processing power. 
+
+Step 5: Monitor the server
+Because you can’t be there to monitor every service every minute, you need to put
+monitoring tools in place to watch your servers for you, then make it easy for you to fi nd
+out when something needs attention. Some of the tools you can use to monitor your servers are described in the sections that follow.
+Configure logging
+Using the rsyslog service (rsyslogd daemon), you can gather critical information and
+error conditions into log fi les about many different services. By default, log messages
+from applications are directed into log fi les in the /var/log directory. For added
+security and convenience, log messages can also be directed to a centralized server, providing a centralized location to view and manage logging
+
+Managing Remote Access with the Secure Shell
+Service
+The Secure Shell tools are a set of client and server applications that allow you to do basic
+communications between client computers and your Linux server. The tools include ssh,
+scp, sftp, and many others. Because communication is encrypted between the server and
+the clients, these tools are more secure than similar, older tools. For example, instead of
+using older remote login commands such as telnet or rlogin, you could use ssh.
+
+Most Linux systems include secure shell clients, and many include the secure shell server
+as well. If you are using the Fedora or RHEL distribution, for example, the client and
+server software packages that contain the ssh tools are openssh, openssh-clients,
+and openssh-server packages, as follows:
+# yum list installed | grep ssh
+On Ubuntu, only the openssh-clients package is installed. It includes the
+functionality of the openssh package. If you need the server installed, use the
+sudo apt-get install openssh-server command.
+$ sudo dpkg --list | grep openssh
+$ sudo apt-get install openssh-server
+
+TABLE 13.1: Commands to Determine sshd Status (page 316)
+TABLE 13.2: Commands to Start sshd
+
+When you install openssh-server on Ubuntu, the sshd daemon is confi gured to start
+automatically at boot. Therefore, you may not need to run the command in Table 13.3 for
+your Ubuntu server
+
+Using SSH client tools
+Many tools for accessing remote Linux systems have been created to make use of the
+SSH service. The most frequently used of those tools is the ssh command, which can be
+used for remote login and remote execution, and other tasks. Commands such as scp
+and rsync can copy one or more fi les at a time between SSH client and server systems.
+The sftp command provides an FTP-like interface for traversing a remote fi lesystem and
+getting and putting fi les between the systems interactively
+
+
+Using ssh for remote login
+Use the ssh command from another Linux computer to test that you are able to log in
+to the Linux system running your sshd service. The ssh command is one you will use
+often to access a shell on the servers you are confi guring.
+
+Try logging in to your Linux server from another Linux system using the ssh command.
+(If you don’t have another Linux system, you can simulate this by typing localhost
+instead of the IP address and logging in as a local user.) The following is an example of
+remotely logging in to johndoe’s account on 10.140.67.23:
+$ ssh johndoe@10.140.67.23
+When you are all done, type exit to end the remote connection
+
+Once you have remotely connected to a system, a fi le in your local system subdirectory,
+~.ssh/known_hosts, will exist. This fi le contains the public key of the remote host
+along with its IP address. Your server’s public and private keys are stored in the
+/etc/ssh directory.
+$ ls .ssh
+known_hosts
+$ cat .ssh/known_hosts
+
+Using ssh for remote execution
+Besides logging into a remote shell, the ssh command can be used to execute a command
+on the remote system and have the output returned to the local system. Here is an example:
+$ ssh johndoe@10.140.67.23 hostname
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

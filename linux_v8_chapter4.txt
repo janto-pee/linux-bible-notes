@@ -1,0 +1,360 @@
+Moving Around the Filesystem
+The Linux fi lesystem is the structure in which all the information on your computer is stored. 
+The following are some of the Linux directories that may interest you:
+(page 94)
+
+Although similar in many ways, the Linux fi lesystem has some striking differences from fi lesystems used
+in MS-DOS and Windows operating systems. Here are a few:
+In MS-DOS and Windows fi lesystems, drive letters represent different storage devices (for
+example, A: is a fl oppy drive and C: is a hard disk). In Linux, all storage devices are connected to the fi lesystem hierarchy. So, the fact that all of /usr may be on a separate hard
+disk or that /mnt/remote1 is a fi lesystem from another computer is invisible to the user.
+■ Slashes, rather than backslashes, are used to separate directory names in Linux. So,
+C:\home\joe in a Microsoft system is /home/joe in a Linux system.
+■ Filenames almost always have suffi xes in DOS (such as .txt for text fi les or .doc for wordprocessing fi les). Although at times you can use that convention in Linux, three-character
+suffi xes have no required meaning in Linux. They can be useful for identifying a fi le type.
+Many Linux applications and desktop environments use fi le suffi xes to determine the contents
+of a fi le. In Linux, however, DOS command extensions such as .com, .exe, and .bat don’t
+necessarily signify an executable. (Permission fl ags make Linux fi les executable.)
+■ Every fi le and directory in a Linux system has permissions and ownership associated with it.
+Security varies among Microsoft systems. Because DOS and Microsoft Windows began as
+single-user systems, fi le ownership was not built into those systems when they were designed.
+Later releases added features such as fi le and folder attributes to address this problem.
+
+Using Basic Filesystem Commands
+cd Change to another directory.
+pwd Print the name of the current (or present) working directory.
+mkdir Create a directory.
+chmod Change the permission on a fi le or directory.
+ls List the contents of a directory.
+
+
+$ cd /usr/share/; The /usr/share option represents the absolute path to a directory on the system.
+Because it begins with a slash (/),
+After that, by typing cd alone, you are returned to your home directory. If you ever
+wonder where you are in the fi lesystem, the pwd command can help you. Here are a few
+other interesting cd command options:
+
+$ cd ~/Music
+The tilde (~) represents your home directory. You can use the tilde
+to refer to directories relative to your home directory as well, such as /home/chris/Music
+with ~/Music. 
+
+The following steps lead you through the process of creating directories within your
+home directory and moving among your directories, with a mention of setting appropriate fi le permissions:
+1. Go to your home directory. To do this, simply type cd in a shell and press
+Enter. (For other ways of referring to your home directory, see the “Identifying
+Directories” sidebar.)
+2. To make sure that you’re in your home directory, type pwd. When I do this, I get
+the following response (yours will refl ect your home directory):
+$ pwd
+/home/joe
+3. Create a new directory called test in your home directory, as follows:
+$ mkdir test
+4. Check the permissions of the directory:
+$ ls -ld test
+drwxr-xr-x 2 joe sales 1024 Jan 24 12:17 test
+This listing shows that test is a directory (d). The d is followed by the
+permissions (rwxr-xr-x), which are explained later in the “Understanding File
+Permissions and Ownership” section. The rest of the information indicates the
+owner (joe), the group (sales), and the date that the fi les in the directory were
+most recently modifi ed (Jan 24 at 12:17 p.m.). 
+
+
+$ chmod 700 test
+This step changes the permissions of the directory to give you complete access
+and everyone else no access at all. (The new permissions should read rwx------.)
+
+
+Using fi le-matching metacharacters
+you can use metacharacters to match the fi les you
+want. Here are some useful metacharacters for matching fi lenames:
+■ * — Matches any number of characters.
+■ ? — Matches any one character.
+■ [...] — Matches any one of the characters between the brackets, which can
+include a hyphen-separated range of letters or numbers.
+
+$ touch apple banana grape grapefruit watermelon
+The touch command creates empty fi les.
+
+$ ls a*
+apple
+$ ls g*
+grape grapefruit
+$ ls g*t
+grapefruit
+$ ls *e*
+apple grape grapefruit watermelon
+$ ls *n*
+banana watermelon
+
+The fi rst example matches any fi le that begins with an a (apple)
+ The next example
+matches any fi les that begin with g (grape, grapefruit). Next, fi les beginning with
+g and ending in t are matched (grapefruit). Next, any fi le that contains an e in the
+name is matched (apple, grape, grapefruit, watermelon). Finally, any fi le that
+contains an n is matched (banana, watermelon).
+
+Here are a few examples of pattern matching with the question mark (?):
+$ ls ????e
+apple grape
+$ ls g???e*
+grape grapefruit
+
+The following examples use braces to do pattern matching:
+$ ls [abw]*
+apple banana watermelon
+$ ls [agw]*[ne]
+apple grape watermelon
+
+You can also
+include ranges within brackets. For example:
+$ ls [a-g]*
+apple banana grape grapefruit
+Here, any fi lenames beginning with a letter from a through g are matche
+
+Using fi le-redirection metacharacters
+Commands receive data from standard input and send it to standard output. Using pipes
+(described earlier), you can direct standard output from one command to the standard
+input of another. With fi les, you can use less than (<) and greater than (>) signs to direct
+data to and from fi les
+
+■ < — Directs the contents of a fi le to the command. In most cases, this is the
+default action expected by the command and the use of the character is optional;
+using less bigfile is the same as less < bigfile.
+
+100
+Part II: Becoming a Linux Power User
+■ > — Directs the standard output of a command to a fi le. If the fi le exists, the
+content of that fi le is overwritten.
+■ 2> — Directs standard error (error messages) to the fi le.
+■ &> — Directs both standard output and standard error to the fi le.
+■ >> — Directs the output of a command to a fi le, adding the output to the end of
+the existing fi le
+
+The following are some examples of command lines where information is directed to and
+from fi les:
+$ mail root < ~/.bashrc
+$ man chmod | col -b > /tmp/chmod
+$ echo "I finished the project on $(date)" >> ~/projects
+
+In the fi rst example, the content of the .bashrc fi le in the home directory is sent in a
+mail message to the computer’s root user. The second command line formats the chmod
+man page (using the man command), removes extra back spaces (col -b), and sends the
+output to the fi le /tmp/chmod (erasing the previous /tmp/chmod fi le, if it exists). The
+fi nal command results in the following text being added to the user’s project fi le:
+I finished the project on Sat Jan 22 13:46:49 PST 2011
+
+Another type of redirection, referred to as here text (also called here document), enables
+you to type text that can be used as standard input for a command. Here documents
+involve entering two less-than characters (<<) after a command, followed by a word. All
+typing following that word is taken as user input until the word is repeated on a line by
+itself. Here is an example:
+$ mail root cnegus rjones bdecker <<thetext
+> I want to tell everyone that there will be a 10 a.m.
+> meeting in conference room B. Everyone should attend.
+>
+> -- James
+> thetext
+$
+This example sends a mail message to root, cnegus, rjones, and bdecker usernames. The
+text entered between <<thetext and thetext becomes the content of the message.
+A common use of here text is to use it with a text editor to create or add to a fi le from
+within a script:
+/bin/ed /etc/resolv.conf <<resendit
+a
+nameserver 100.100.100.100
+.
+w
+q
+resendit
+
+With these lines added to a script run by the root user, the ed text editor adds the IP
+address of a DNS server to the /etc/resolv.conf fi le
+
+Using brace expansion characters
+By using curly braces ({}), you can expand out a set of characters across fi lenames,
+directory names, or other arguments you give commands. For example, if you want to
+create a set of fi les such as memo1 through memo5, you can do that as follows:
+$ touch memo{1,2,3,4,5}
+$ ls
+memo1 memo2 memo3 memo4 memo5
+
+
+Listing Files and Directories
+The ls command is the most common command used to list information about fi les and
+directories.
+however, many
+Linux systems (including Fedora and RHEL) assign an alias ls to add options. To see if
+ls is aliased, type the following:
+$ alias ls
+alias ls='ls --color=auto'
+
+The --color=auto option causes different types of fi les and directories to be displayed
+in different colors.
+
+$ cd $HOME/test
+$ touch scriptx.sh apple
+$ chmod 755 scriptx.sh
+$ mkdir Stuff
+$ ln -s apple pointer_to_apple
+$ ls
+
+$ ls -l
+$ ls -la /home/joe
+
+Identifying Directories
+When you need to identify your home directory on a shell command line, you can use the following:
+■ $HOME — This environment variable stores your home directory name.
+■ ~ — The tilde (~) represents your home directory on the command line.
+You can also use the tilde to identify someone else’s home directory. For example, ~joe
+would be expanded to the joe home directory (probably /home/joe). So, if I wanted to
+go to the directory /home/joe/test, I could type cd ~joe/test to get there.
+Other special ways of identifying directories in the shell include the following:
+■ . — A single dot (.) refers to the current directory.
+■ .. — Two dots (..) refer to a directory directly above the current directory.
+■ $PWD — This environment variable refers to the current working directory.
+■ $OLDPWD — This environment variable refers to the previous working directory before
+you changed to the current one. (Typing cd – returns you to the directory represented
+by $OLDPWD.)
+
+To show hidden and non-hidden fi les:
+$ ls -a 
+
+To list all fi les by time most recently modifi ed:
+$ ls -at 
+
+To list fi les and append fi le-type indicators:
+$ ls -F 
+
+To not include any fi les beginning with the letter g in the list:
+$ ls --hide=g*
+
+To list info about a directory instead of the fi les it contains:
+$ ls -ld $HOME/test/
+
+To create multiple directory layers (-p is needed):
+$ mkdir -p $HOME/test/documents/memos/ 
+
+To list all fi les and directories recursively from current directory down:
+$ ls -R
+
+To list fi les by size:
+$ ls -S 
+
+
+Understanding File Permissions and Ownership
+The nine bits assigned to each fi le for permissions defi ne the access that you and others
+have to your fi le. Permission bits for a regular fi le appear as -rwxrwxrwx. Those bits are
+used to defi ne who can read, write, or execute the fi le
+
+Of the nine-bit permissions, the fi rst three bits apply to the owner’s permission, the next
+three apply to the group assigned to the fi le, and the last three apply to all others. The
+r stands for read, the w stands for write, and the x stands for execute permissions. If a
+dash appears instead of the letter, it means that permission is turned off for that associated read, write, or execute bit.
+
+Table 4.2 explains what you
+can do with each of them.
+
+$ ls -ld ch3 test
+-rw-rw-r-- 1 joe sales 4983 Jan 18 22:13 ch3
+drwxr-xr-x 2 joe sales 1024 Jan 24 13:47 test
+
+The fi rst line shows that the ch3 fi le has read and write permission for the owner and
+the group. All other users have read permission, which means they can view the fi le but
+cannot change its contents or remove it. The second line shows the test directory (indicated by the letter d before the permission bits). The owner has read, write, and execute
+permissions while the group and other users have only read and execute permissions
+
+As a result, the owner can add, change, or delete fi les in that directory, and everyone else
+can only read the contents, change to that directory, and list the contents of the directory. (If you had not used the -d options to ls, you would have listed fi les in the test
+directory instead of permissions of that directory.
+
+Changing permissions with chmod (numbers)
+
+If you own a fi le, you can use the chmod command to change the permission on it as you
+please. In one method of doing this, each permission (read, write, and execute) is assigned
+a number — r=4, w=2, and x=1 — and you use each set’s total number to establish the
+permission
+
+The following chmod command results in this permission: rwxrwxrwx
+# chmod 777 file
+The following chmod command results in this permission: rwxr-xr-x
+# chmod 755 file
+The following chmod command results in this permission: rw-r--r--
+# chmod 644 file rw-r--rThe following chmod command results in this permission: ---------
+# chmod 000 file
+
+Changing permissions with chmod (letters)
+You can also turn fi le permissions on and off using plus (+) and minus (–) signs,
+respectively, along with letters to indicate what changes and for whom. 
+
+The resulting permissions are shown to the
+right of each command:
+The following chmod command results in this permission: r-xr-xr-x
+chmod a-w file
+The following chmod command results in this permission: rwxrwxrwchmod o-x file
+The following chmod command results in this permission: rwx------
+chmod go-rwx file
+Likewise, the following examples start with all permissions closed (---------). The
+plus sign is used with chmod to turn permissions on:
+The following chmod command results in this permission: rw-------
+$ chmod u+rw files
+The following chmod command results in this permission: --x--x--x
+$ chmod a+x files
+The following chmod command results in this permission: r-xr-x---
+$ chmod ug+rx files 
+
+$ chmod -R o-w $HOME/myapps
+
+$ chmod -R o-w $HOME/myapps
+This example recursively removes write permissions for “other” on any fi les and directories below the myapps directory. If you had used numbers such as 644, execute permission would be turned off for directories; using 755, execute permission would be turned
+on for regular fi les. Using o-w, only one bit is turned off and all other bits are left alone.
+
+Changing fi le ownership
+As a regular user, you cannot change ownership of a fi le or directory to have them
+belong to another user. You can change ownership as the root user.
+
+# chown joe /home/joe/memo.txt
+# ls -l /home/joe/memo.txt
+-rw-r--r--. 1 joe root 0 Dec 19 11:23 /home/joe/memo.txt
+
+Notice that the chown command changed the user to joe but left the group as root.
+To change both user and group to joe, you could type the following instead:
+# chown joe:joe /home/joe/memo.txt
+# ls -l /home/joe/memo.txt
+-rw-r--r--. 1 joe joe 0 Dec 19 11:23 /home/joe/memo.txt
+The chown command can be use recursively as well. Using the recursive option (-R) is
+helpful if you need to change a whole directory structure to ownership by a particular user
+
+
+# chown -R joe:joe /media/myusb
+
+
+Moving, Copying, and Removing Files
+$ mv abc def
+$ mv abc ~
+$ mv /home/joe/mymemos/ /home/joe/Documents/
+
+The fi rst mv command moves the fi le abc to the fi le def in the same directory (essentially renaming it), whereas the second moves the fi le abc to your home directory (~).
+The next command moves the mymemos directory (and all of its contents) to the
+/home/joe/Documents directory. 
+
+By default, the mv command overwrites any existing fi les if the fi le you are moving to
+exists.
+
+However, many Linux systems alias the mv command so that it uses the -i option
+(which causes mv to prompt you before overwriting existing fi les). Here’s how to check if
+that is true on your system:
+$ alias mv
+alias mv='mv -i'
+
+Here are some examples of using the cp command to copy fi les from one location to
+another:
+$ cp abc def
+$ cp abc ~
+$ cp -r /usr/share/doc/bash-completion* /tmp/a/
+$ cp -ra /usr/share/doc/bash-completion* /tmp/b/
+
+The fi rst copy command (cp) copies abc to the new name def in the same directory, whereas
+the second copies abc to your home directory (~), keeping the name abc. The two recursive
+(-r) copies copy the bash-completion directory, and all fi les it contains, fi rst to new /tmp/a/
+and /tmp/b/ directories. 

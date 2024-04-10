@@ -1,0 +1,151 @@
+Managing Running Processes
+
+In addition to being a multiuser operating system, Linux is also a multitasking system.
+Multitasking means that many programs can be running at the same time. An instance of a
+running program is referred to as a process. Linux provides tools for listing running
+processes, monitoring system usage, and stopping (or killing) processes when necessary.
+From a shell, you can launch processes, and then pause, stop, or kill them. You can also put
+them in the background and bring them to the foreground. This chapter describes tools such as
+ps, top, kill, jobs, and other commands for listing and managing processes.
+
+A process is a running instance of a command. For example, there may be one vi command on
+the system. But if vi is currently being run by 15 different users, that command will be represented by 15 different running processes.
+A process is identifi ed on the system by what is referred to as a process ID. That process ID is
+unique for the current system. In other words, no other process can use that number as
+its process ID while that fi rst process is still running. However, once a process is ended, another
+process can reuse that number.
+
+Listing processes with ps   $ ps u      Use it to see which programs are running, In this example, the u option asks that usernames be shown,, as well as other information such as the time the process started and memory and CPU usage for processes
+associated with the current user.
+
+Many processes running on a computer are not associated with a terminal. A normal
+Linux system has many processes running in the background. Background system
+processes perform such tasks as logging system activity or listening for data coming in
+from the network
+To page through all the processes running on your Linux
+system for the current user, add the pipe (|) and the less command to ps ux:
+$ ps ux | less
+A pipe (located above the backslash character on the keyboard) enables you to direct
+the output of one command to be the input of the next command. In this example,
+the output of the ps command (a list of processes) is directed to the less command,
+which enables you to page through that information. Use the spacebar to page through
+and type q to end the list. You can also use the arrow keys to move one line at a time
+through the output.
+
+ If you want to sort by a specifi c column, you can use the sort= option. For example, to
+see which processes are using the most memory, I sort by the rss fi eld. That will sort
+from lowest memory use to highest. Because I want to see the highest ones fi rst, I put a
+hyphen in front of that option to sort (sort=-rss).
+ ps -eo 'pid,user,uid,group,gid,vsz,rss,comm' | less
+
+ The top command provides a screen-oriented means of displaying processes running on
+your system. With top, the default is to display processes based on how much CPU time
+they are currently consuming
+
+However, you can sort by other columns as well. Once
+you identify a misbehaving process, you can also use top to kill (completely end) or
+renice (reprioritize) that process.
+If you want to be able to kill or renice processes, you need to run top as the root user. If
+you just want to display processes, and possibly kill or change your own processes, you
+can do that as a regular user. Figure 6.1 shows an example of the top window:
+
+General information about your system appears at the top of the top output, followed by
+information about each running process (or at least as many as will fi t on your screen).
+At the top, you can see how long the system has been up, how many users are currently
+
+logged in to the system, and how much demand there has been on the system for the
+past 1, 5, and 10 minutes.
+Other general information includes how many processes (tasks) are currently running,
+how much CPU is being used, and how much RAM and swap are available and being used.
+Following the general information are listings of each process, sorted by what percent of
+the CPU is being used by each process. All this information is redisplayed every 5 seconds,
+by default.
+
+The following list includes actions you can do with top to display information in different ways and modify running processes:
+■ Press h to see help options, and then press any key to return to the top display.
+■ Press M to sort by memory usage instead of CPU, and then press P to return to
+sorting by CPU.
+■ Press the number 1 to toggle showing CPU usage of all your CPUs, if you have
+more than one CPU on your system.
+■ Press R to reverse sort your output.
+■ Press u and enter a username to display processes only for a particular user.
+
+A common practice is to use top to fi nd processes that are consuming too much memory
+or processing power and then act on those processes in some way. A process consuming
+too much CPU can be reniced to give it less priority to the processors. A process consuming too much memory can be killed. With top running, here’s how to renice or kill a
+process:
+■ Renicing a process: Note the process ID of the process you want to renice and
+press r. When the PID to renice: message appears, type the process ID of the
+process you want to renice. When prompted to Renice PID to value: type in a
+number from –19 to 20. (See “Setting processor priority with nice and renice”
+later in this chapter for information on the meanings of different renice values.)
+■ Killing a process: Note the process ID of the process you want to kill and press
+k. Type 15 to terminate cleanly or 9 to just kill the process outright. (See “Killing
+processes with kill and killall” later in this chapter for more information on
+using different signals you can send to processes.)
+
+
+Although the bash shell doesn’t include a GUI for running many programs at once, it
+does let you move active programs between the background and foreground. In this way,
+you can have a lot of stuff running and selectively choose the one you want to deal with
+at the moment.
+There are several ways to place an active program in the background. One is to add an
+ampersand (&) to the end of a command line when you fi rst run the command. You can
+also use the at command to run commands in such a way that they are not connected to
+the shell.
+
+To stop a running command and put it in the background, press Ctrl+Z. After the
+command is stopped, you can either bring it back into the foreground to run (the
+fg command) or start it running in the background (the bg command). Keep in mind
+that any command running in the background might spew output during commands
+that you run subsequently from that shell. For example, if output appears from a command running in the background during a vi session, simply press Ctrl+L to redraw the
+screen to get rid of the output.
+
+Starting background processes
+If you have programs that you want to run while you continue to work in the shell, you can
+place the programs in the background. To place a program in the background at the time
+you run the program, type an ampersand (&) at the end of the command line, like this:
+$ find /usr > /tmp/allusrfiles &
+
+To check which
+commands you have running in the background, use the jobs command, as follows:
+$ jobs
+
+Using foreground and background commands
+Continuing with the example, you can bring any of the commands on the jobs list to the
+foreground. For example, to edit myfile again, type:
+$ fg %1
+As a result, the vi command opens again. All text is as it was when you stopped the vi job.
+
+To refer to a background job (to cancel or bring it to the foreground), use a percent sign (%)
+followed by the job number. You can also use the following to refer to a background job:
+■ % — Refers to the most recent command put into the background (indicated by
+the plus sign when you type the jobs command). This action brings the
+command to the foreground.
+■ %string — Refers to a job where the command begins with a particular string of
+characters. The string must be unambiguous. (In other words, typing %vi when
+there are two vi commands in the background results in an error message.)
+■ %?string — Refers to a job where the command line contains a string at any
+point. The string must be unambiguous or the match will fail.
+■ %-- — Refers to the previous job stopped before the one most recently stopped.
+If a command is stopped, you can start it running again in the background using the bg
+command. For example, take job 5 from the jobs list in the previous example:
+[5]+ Stopped nroff -man man4/* >/tmp/man4
+Type the following:
+$ bg %5
+
+Using kill to signal processes by PID
+Using commands such as ps and top, you can fi nd processes you want to send a signal
+to. Then you can use the process ID of that process as an option to the kill command,
+along with the signal you want to send.
+
+here are some examples of the kill command you
+could use to kill that process:
+$ kill 10432
+$ kill -15 10432
+$ kill -SIGKILL 10432
+
+The default signal sent by kill is 15 (SIGTERM), so the fi rst two examples have exactly
+the same results. On occasion, a SIGTERM won’t kill a process, so a SIGKILL may be
+needed to kill it. Instead of SIGKILL, you could use –9.
+
