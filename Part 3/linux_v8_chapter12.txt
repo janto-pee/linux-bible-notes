@@ -1,0 +1,112 @@
+Your operating system, applications, and data all need to be kept on some kind of permanent
+storage so that when you turn off your computer, it is all still there when the computer is
+turned on again. Traditionally, that storage has been provided by a hard disk in your computer. To organize the information on that disk, the disk is usually divided into partitions, with
+most partitions given a structure referred to as a filesystem.
+
+This chapter describes how to work with hard disks. Hard disk tasks include partitioning, adding fi lesystems, and managing those fi lesystems in various ways.
+After covering basic partitions, I describe how logical volume management (LVM) can be used
+to make it easier to grow, shrink, and otherwise manage fi lesystems more effi ciently.
+
+Understanding Disk Storage
+The basics of how data storage works are the same in most modern operating systems. When
+you install the operating system, the disk is divided into one or more partitions. Each partition
+is formatted with a fi lesystem. In the case of Linux, some of the partitions may be specially
+formatted for elements such as swap area or LVM physical volumes.
+While disks are used for permanent storage, random access memory (RAM) and swap are used
+for temporary storage. For example, when you run a command, that command is copied from
+the hard disk into RAM so that your computer processor (CPU) can access it more quickly. 
+page 278
+
+Each regular disk partition created
+when you install Linux is associated with a device name. An entry in the /etc/fstab
+fi le tells Linux each partition’s device name and where to mount it (as well as other bits
+of information). The mounting is done when the system boots
+
+Viewing disk partitions
+To view disk partitions, use the fdisk command with the -l option
+# fdisk -c -u -l /dev/sdc
+
+Your fi rst primary hard disk usually appears as /dev/sda.
+With RHEL and Fedora
+installations, there is usually at least one LVM partition, out of which other partitions
+can be assigned. 
+# fdisk -cul /dev/sda
+
+Creating a single-partition disk
+partitioning a USB fl ash drive
+Creating a multiple-partition disk
+
+Using Logical Volume Management Partitions
+Logical Volume Manager (LVM) offers lots of fl exibility and effi ciency in dealing with
+constantly changing storage needs. With LVM, physical disk partitions are added to
+pools of space called volume groups. Logical volumes are assigned space from volume
+groups as needed.
+
+Checking an existing LVM
+# fdisk -cul /dev/sda | grep /dev/sda
+Creating LVM logical volumes
+
+
+Growing LVM logical volumes
+If you run out of space on a logical volume, you can add space to it without even
+unmounting it. To do that, you must have space available in the volume group, grow the
+logical volume, and grow the fi lesystem to fi ll it. Building on the procedure in the previous section,
+
+Enabling swap areas
+A swap area is an area of the disk that is made available to Linux if the system runs out
+of memory (RAM). If your RAM is full and you try to start another application without
+a swap area, that application will fail.With a swap area, Linux can temporarily swap
+out data from RAM to the swap area and then get it back when needed.
+
+Disabling swap area
+If at any point you want to disable a swap area, you can do so using the swapoff
+command. You might do this, in particular, if the swap area is no longer needed and you
+want to reclaim the space being consumed by a swap fi le or remove a USB drive that is
+providing a swap partition
+
+Using the mount command to mount fi le systems
+Linux systems automatically run mount -a (mount all fi lesystems) each time you boot.
+For that reason, you generally use the mount command only for special situations. In
+particular, the average user or administrator uses mount in two ways:
+■ To display the disks, partitions, and remote fi lesystems currently mounted
+■ To temporarily mount a fi lesystem
+
+Using the mkfs Command to Create a Filesystem
+You can create a fi lesystem for any supported fi lesystem type on a disk or partition that
+you choose. You do so with the mkfs command. Although this is most useful for creating fi lesystems on hard-disk partitions, you can create fi lesystems on USB fl ash drives,
+fl oppy disks, or rewritable CDs as well
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

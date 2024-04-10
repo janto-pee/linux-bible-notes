@@ -1,0 +1,277 @@
+Linux, like other UNIX-based systems, was intended for use by more than one person at a
+time. Multiuser features enable many people to have accounts on a single Linux system,
+with their data kept secure from others. Multitasking enables many people to run many
+programs on the computer at the same time, with each person able to run more than one
+program. Sophisticated networking protocols and applications make it possible for a Linux
+system to extend its capabilities to network users and computers around the world. The person
+assigned to manage all of a Linux system’s resources is called the system administrator.
+
+Even if you are the only person using a Linux system, system administration is still set up to be
+separate from other computer use. To do most administrative tasks, you need to be logged in as the
+root user (also called the superuser) or to temporarily get root permission. Regular users who don’t
+have root permission cannot change, or in some cases even see, some of the confi guration information for a Linux system. In particular, security features such as stored passwords are protected from
+general view.
+
+If you are the system administrator of a Linux system, you generally log in as a regular
+user account and then ask for administrative privileges when you need them. This is
+often done with one of the following:
+■ su command — Often su is used to open a shell as root user. Once open, the
+administrator can run multiple commands and then exit to return to a shell as a
+regular user.
+■ sudo command — With sudo, a regular user is given root privileges, but only
+when that user runs the sudo command. After running that one command with
+sudo, the user is immediately returned to a shell, and will be acting as the regular user again.
+■ Graphical windows — Many graphical administration windows, which can be
+launched from the System or Applications menu, can be started by a regular
+user. When root privilege is needed, you are prompted for the root password.
+
+Tasks that can be done by only the root user tend to be those that affect the system as a
+whole or impact the security or health of the system. The following is a list of common
+features that a system administrator is expected to manage:
+■ Filesystems — When you fi rst install Linux, the directory structure is set up
+to make the system usable. However, if you later want to add extra storage or
+change the fi le system layout, you need administrative privileges to do that.
+Also, the root user has permission to access fi les owned by any user. As a result,
+the root user can copy, move, or change any other user’s fi les — a privilege
+needed to make backup copies of the fi lesystem for safe keeping.
+■ Software installation — Because malicious software can harm your system or
+make it insecure, you need root privilege to install software so it is available to
+all users on your system. Regular users can still install some software in their
+own directories and can list information about installed system software.
+■ User accounts — Only the root user can add and remove user accounts and
+group accounts.
+■ Network interfaces — It used to be totally up to the root user to confi gure
+network interfaces as well as to start and stop those interfaces. Now, many Linux
+desktops allow regular users to start and stop network interfaces from their desktop using Network Manager.
+■ Servers — Confi guring web servers, fi le servers, domain name servers, mail
+servers, and dozens of other servers requires root privilege, as does starting and
+stopping those services. Often, services run as non-root users, and content, such
+as web pages, can be added to servers by non-root users if you confi gure your
+system to allow that. 
+■ Security features — Setting up security features, such as fi rewalls and user
+access lists, is usually done by the root user. It’s also up to the root user to monitor how the services are being used and make sure that server resources are not
+exhausted or abused.
+
+
+Using Graphical Administration Tools
+Many Linux systems come with simplifi ed graphical tools for administering Linux. If
+you are a casual user, these tools often let you do everything you need to administer
+your system without editing confi guration fi les or running shell commands.
+
+Using the root User Account
+Every Linux system starts out with at least one administrative user account (the root
+user) and possibly one or more regular user accounts (given a name that you choose, or
+a name assigned by your Linux distribution). 
+
+The root user has complete control of the operation of your Linux system. That user can
+open any fi le or run any program. The root user also installs software packages and adds
+accounts for other people who use the system.
+
+After you have logged in as root, the home directory for the root user is typically
+/root. The home directory and other information associated with the root user account
+are located in the /etc/passwd fi le. Here’s what the root entry looks like in the
+/etc/passwd fi le:
+root:x:0:0:root:/root:/bin/bash
+This shows that for the user named root, the user ID is set to 0 (root user), the group ID
+is set to 0 (root group), the home directory is /root, and the shell for that user is
+/bin/bash. (Linux uses the /etc/shadow fi le to store encrypted password data, so the
+password fi eld here contains an x.) You can change the home directory or the shell used
+by editing the values in this fi le. A better way to change these values, however, is to use
+the usermod command (see the section “Modifying Users with usermod” in Chapter 11
+for further information).
+
+Becoming root from the shell (su command)
+Although you can become the superuser by logging in as root, sometimes that is not
+convenient. For example, you may be logged in to a regular user account and just want
+to make a quick administrative change to your system without having to log out and log
+back in.
+
+The solution is to use the su command. From any Terminal window or shell, you can
+simply type the following:
+$ su
+
+When you are prompted, type in the root user’s password. The prompt for the regular user
+($) changes to the superuser prompt (#). At this point, you have full permission to run
+any command and use any fi le on the system. However, one thing that the su command
+doesn’t do when used this way is read in the root user’s environment. As a result, you may
+type a command that you know is available and get the message Command Not Found. To
+fi x this problem, use the su command with the dash (-) option instead, like this:
+$ su -
+
+You still need to type the password, but after that, everything that normally happens at
+login for the root user happens after the su command is completed. Your current directory will be root’s home directory (probably /root), and things such as the root user’s
+PATH variable will be used. If you become the root user by just typing su, rather than
+su -, you won’t change directories or the environment of the current login session.
+
+You can also use the su command to become a user other than root. This is useful for
+troubleshooting a problem that is being experienced by a particular user, but not by
+others on the computer
+$ su - jsmith
+
+Even if you were root user before you typed this command, afterward you would have
+only the permissions to open fi les and run programs that are available to jsmith.
+
+Gaining administrative access with sudo
+A particular user can also be given administrative permissions for particular tasks without being given the root password. The sudoers facility is the most common way to
+provide such privilege. Using sudoers, for any users or groups on the system you can:
+■ Assign root privilege for any command they run with sudo.
+■ Assign root privilege for a select set of commands.
+■ Give users root privilege without telling them the root password because they
+only have to provide their own user password to gain root privilege.
+■ Allow users, if you choose, to run sudo without entering a password at all.
+■ Track which users have run administrative commands on your system. (Using
+su, all you know is that someone with the root password logged in, whereas the
+sudo command logs which user runs an administrative command.)
+
+With the sudoers facility, giving full or limited root privileges to any user simply entails
+adding the user to /etc/sudoers and defi ning what privilege you want that user to
+have. Then the user can run any command he or she is privileged to use by preceding
+that command with the sudo command.
+Here’s an example of how to use the sudo facility to cause the user named joe to have
+full root privilege.
+
+1. As the root user, edit the /etc/sudoers fi le by running the visudo command:
+# /usr/sbin/visudo
+By default, the fi le opens in vi, unless your EDITOR variable happens to be set to
+some other editor acceptable to visudo (for example, export EDITOR=gedit). 
+
+2. Add the following line to allow joe to have full root privileges on the computer:
+joe ALL=(ALL) ALL
+This line causes joe to provide a password (his own password, not the root
+password) in order to use administrative commands. To allow joe to have that
+privilege without using a password, type the following line instead:
+joe ALL=(ALL) NOPASSWD: ALL
+3. Save the changes to the /etc/sudoers fi le (in vi, type Esc, and then :wq).
+The following is an example of a session by the user jake after he has been assigned
+sudo privileges:
+[joe]$ sudo touch /mnt/testfile.txt
+
+Even after jake has given the password, he must still use the sudo command to run
+subsequent administrative commands as root (the rm fails, but the sudo rm succeeds).
+Notice that he is not prompted for a password for the second sudo. That’s because after
+entering his password successfully, he can enter as many sudo commands as he wants
+for the next 5 minutes without having to enter it again. (You can change the timeout
+value from 5 minutes to however long you want by setting the passwd_timeout value in
+the /etc/sudoers fi le.)
+
+The preceding example grants a simple all-or-nothing administrative privilege to joe.
+However, the /etc/sudoers fi le gives you an incredible amount of fl exibility in permitting individual users and groups to use individual applications or groups of applications.
+Refer to the sudoers and sudo man pages for information about how to tune your sudo
+facility
+
+
+
+
+Exploring Administrative Commands, Confi guration
+Files, and Log Files
+
+You can expect to fi nd many commands, confi guration fi les, and log fi les in the same
+places in the fi le system, regardless of which Linux distribution you are using. 
+
+Administrative commands
+Only the root user is intended to use many administrative commands. When you log in
+as root (or use su - from the shell to become root), your $PATH variable is set to include
+some directories that contain commands for the root user. These include the following:
+/sbin — Contains commands needed to boot your system, 
+/usr/sbin — Contains commands for such things as managing user accounts
+(such as useradd) and checking processes that are holding fi les open (such as
+lsof).
+
+Some administrative commands are contained in regular user directories (such as
+/bin and /usr/bin). This is especially true of commands that have some options available to everyone. An example is the /bin/mount command, which anyone can use to
+list mounted fi le systems, but only root can use to mount fi le systems. 
+
+To fi nd commands intended primarily for the system administrator, check out the
+section 8 manual pages (usually in /usr/share/man/man8). They contain descriptions
+and options for most Linux administrative commands.
+
+Some third-party applications add administrative commands to directories that are not
+in your PATH. For example, an application may put commands in /usr/local/bin,
+/opt/bin, or /usr/local/sbin.
+
+
+Throughout this book, you’ll fi nd descriptions of the confi guration fi les you need to set
+up the different features that make up Linux systems. The two major locations of confi guration fi les are your home directory (where your personal confi guration fi les are kept)
+and the /etc directory (which holds system-wide confi guration fi les). 
+
+Following are descriptions of directories (and subdirectories) that contain useful confi guration fi les check page 175-178
+
+
+
+
+Administrative log fi les
+
+This is a good thing, when
+you consider how much is going on in a complex operating system. Sometimes you are
+trying to get a new facility to work and it fails without giving you the foggiest reason
+why. Other times, you want to monitor your system to see whether people are trying to
+access your computer illegally. In any of those cases, you can use log fi les to help track
+down the problem.
+
+The main utility for logging error and debugging messages for Linux is the rsyslogd
+daemon. (Some older Linux systems use syslogd and syslogd daemons.)
+Logging is done according to information in the /etc/rsyslog.conf fi le. Messages are
+typically directed to log fi les that are usually in the /var/log directory. 
+
+In any case, administrative logins are available with Linux; however, logging in directly
+as those users is disabled by default. The accounts are maintained primarily to provide ownership for fi les and processes associated with particular services. By running
+daemon processes under separate administrative logins, having one on those processes
+cracked does not give the cracker root permission and the ability to access other
+processes and fi les. Consider the following examples:
+■ lp — User owns such things as the /var/log/cups printing log fi le and various
+printing cache and spool fi les. The home directory for lp is /var/spool/lpd.
+■ apache — User can be used to set up content fi les and directories. It is primarily
+used to run the web server processes (httpd).
+■ postfix — User owns various mail server spool directories and fi les. The user
+runs the daemon processes used to provide the postfi x service (master).
+
+
+By default, the administrative logins in the preceding list are disabled. You would need to
+change the default shell from its current setting (usually /sbin/nologin or /bin/false)
+to a real shell (typically /bin/bash) to be able to log in as these users.
+
+
+Checking your hardware
+When your system boots, the kernel detects your hardware and loads drivers that allow
+Linux to work with that hardware. Because messages about hardware detection scroll
+quickly off the screen when you boot, to view potential problem messages you have to
+redisplay those messages after the system comes up.
+There are a couple of ways to view kernel boot messages after Linux comes up. Any user
+can run the dmesg command to see what hardware was detected and which drivers were
+loaded by the kernel at boot time. As new messages are generated by the kernel, those
+messages are also made available to the dmesg command. A second way to see those
+messages on some Linux systems is by displaying the contents of the /var/log/dmesg
+fi le, if it exists.
+
+The following is an example of some output from the dmesg command that was trimmed
+down to show some interesting information:
+$ dmesg | less
+
+The lspci command lists PCI
+buses on your computer and devices connected to them. Here’s a snippet of output:
+$ lspci
+
+If you are specifi cally interested in USB devices, try the lsusb command. By default,
+lsusb lists information about the computer’s USB hubs along with any USB devices
+connected to the computer’s USB ports:
+$ lsusb
+
+To see details about your processor, run the lscpu command. That command gives basic
+information about your computer’s processors.
+$ lscpu
+
+
+Listing loaded modules
+To see which modules are currently loaded into the running kernel on your computer,
+use the lsmod command. Consider the following example:
+# lsmod
+
+Here is an example of the modprobe command being used to load the parport module,
+which provides the core functions to share parallel ports with multiple devices:
+# modprobe parport
+
+Removing modules
+Use the rmmod command to remove a module from a running kernel. For example, to
+remove the module parport_pc from the current kernel, type the following:
+# rmmod parport_pc
+

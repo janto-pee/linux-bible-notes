@@ -1,0 +1,107 @@
+Before you can become a full-fl edged system administrator, you need to be able to use a plaintext editor
+
+If you are using a desktop, you can run gedit (select Applications ➢ Accessories ➢ gedit
+Text Editor), which is fairly intuitive for editing text. There’s also a simple text editor you can run from the shell called nano. However, most Linux shell users use either the vi or
+emacs command to edit text fi les
+
+The advantage of vi or emacs over a graphical editor is that you can use the command
+from any shell, character terminal, or character-based connection over a network (using
+telnet or ssh, for example) — no graphical interface is required. They also each
+contain tons of features, so you can continue to grow with them.
+
+Table Exploring Other Text Editors page(156)
+
+ For example, to open a fi le called
+/tmp/test, type the following command:
+$ vi /tmp/test
+
+First, you need to know the two main operating modes: command and input. The vi
+editor always starts in command mode. Before you can add or change text in the fi le,
+you have to type a command (one or two letters and an optional number) to tell vi what
+you want to do. Case is important, so use uppercase and lowercase exactly as shown in
+the examples!
+
+
+NOTE
+On Red Hat Enterprise Linux, Fedora, and other Linux distributions, for regular users the vi command is aliased to run vim. If you type alias vi, you should see alias vi='vim'. The fi rst obvious difference between vi and vim is that any known text fi le type, such as HTML, C code, or a
+common confi guration fi le, will appear in color. The colors will indicate the structure of the fi le. Other
+features of vim that are not in vi include features such as visual highlighting and split-screen mode.
+By default, the root user doesn’t have vi aliased to vim.
+
+Adding text
+To get into input mode, type an input command. To start out, type any of the following
+commands. When you are done inputting text, press the Esc key (sometimes twice) to
+return to command mode. Remember the Esc key!
+■ a—The add command. With this command, you can input text that starts to the
+right of the cursor.
+■ A—Add at end command. With this command, you can input text starting at the
+end of the current line.
+i—The insert command. With this command, you can input text that starts to
+the left of the cursor.
+■ I—The insert at beginning command. With this command, you can input text
+that starts at the beginning of the current line.
+■ o—The open below command. This command opens a line below the current
+line and puts you in insert mode.
+■ O—The open above command. This command opens a line above the current line
+and puts you in insert mode.
+
+Type a few words and then press Enter. Repeat that a few times until you have a few
+lines of text. When you’re fi nished typing, press Esc to return to command mode. Now
+that you have a fi le with some text in it, try moving around in your text with the keys or
+letters described in the next section.
+
+
+Moving around in the text
+■ Arrow keys—Move the cursor up, down, left, or right in the fi le one character
+at a time. To move left and right, you can also use Backspace and the spacebar,
+respectively. If you prefer to keep your fi ngers on the keyboard, move the cursor
+with h (left), l (right), j (down), or k (up).
+■ w—Moves the cursor to the beginning of the next word (delimited by spaces,
+tabs, or punctuation).
+■ W—Moves the cursor to the beginning of the next word (delimited by spaces
+or tabs).
+■ b—Moves the cursor to the beginning of the previous word (delimited by spaces,
+tabs, or punctuation).
+■ B—Moves the cursor to the beginning of the previous word (delimited by spaces
+or tabs).
+■ 0 (zero)—Moves the cursor to the beginning of the current line.
+■ $—Moves the cursor to the end of the current line
+H—Moves the cursor to the upper-left corner of the screen (fi rst line on the
+screen).
+■ M—Moves the cursor to the fi rst character of the middle line on the screen.
+■ L—Moves the cursor to the lower-left corner of the screen (last line on the
+screen).
+
+Deleting, copying, and changing text
+
+x—Deletes the character under the cursor.
+■ X—Deletes the character directly before the cursor.
+■ d<?>—Deletes some text.
+■ c<?>—Changes some text.
+■ y<?>—Yanks (copies) some text.
+
+
+Pasting (putting) text
+After text has been copied to the buffer (by deleting, changing, or yanking it), you can
+place that text back in your fi le using the letter p or P. With both commands, the text
+most recently stored in the buffer is put into the fi le in different ways.
+■ P—Puts the copied text to the left of the cursor if it’s letters or words; puts the
+copied text above the current line if it contains lines of text.
+■ p—Puts the buffered text to the right of the cursor if it’s letters or words; puts the
+buffered text below the current line if it contains lines of text.
+
+Exiting vi
+To wrap things up, use the following commands to save or quit the fi le:
+■ ZZ—Save the current changes to the fi le and exit from vi.
+■ :w—Save the current fi le but continue editing.
+■ :wq—Same as ZZ.
+■ :q—Quit the current fi le. This works only if you don’t have any unsaved
+changes.
+■ :q!—Quit the current fi le and don’t save the changes you just made to
+the fi le.
+
+Finding Files
+Even a basic Linux installation can have thousands of fi les installed on it. To help you
+fi nd fi les on your system, you can use commands such as locate (to fi nd commands
+by name), find (to fi nd fi les based on lots of different attributes), and grep (to search
+within text fi les to fi nd lines in fi les that contain search text).

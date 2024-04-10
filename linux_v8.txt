@@ -1,0 +1,436 @@
+Understanding What Linux Is
+Linux is a computer operating system. An operating system consists of the software that
+manages your computer and lets you run applications on it. The features that make up
+Linux and similar computer operating systems include the following:
+■ Detecting and preparing hardware — When the Linux system boots up (when
+you turn on your computer), it looks at the components on your computer (CPU,
+hard drive, network cards, and so on) and loads the software (drivers and modules) needed to access those particular hardware devices.
+■ Managing processes — The operating system must keep track of multiple processes running at the same time and decide which have access to the CPU and
+when. The system also must offer ways of starting, stopping, and changing the
+status of processes.
+■ Managing memory — RAM and swap space (extended memory) need to be allocated to applications as they need memory. The operating system decides how
+requests for memory are handled.
+■ Providing user interfaces — An operating system must provide ways of accessing the system. The fi rst Linux systems were accessed from a command-line
+interpreter called the shell. Today, graphical desktop interfaces are commonly
+available as well.
+■ Controlling filesystems — Filesystem structures are built into the operating system (or loaded as modules). The operating system controls ownership and access
+to the fi les and directories that the fi lesystems contain.
+■ Providing user access and authentication — Creating user accounts and allowing boundaries to be set between users is a basic feature of Linux. Separate user
+and group accounts enable users to control their own fi les and processes.
+■ Offering administrative utilities — In Linux, there are hundreds (perhaps thousands) of commands and graphical windows to do such things as add users,
+manage disks, monitor the network, install software, and generally secure and
+manage your computer.
+■ Starting up services — To use printers, handle log messages, and provide a
+variety of system and network services, processes run in the background, waiting for requests to come in. There are many types of services that run in Linux.
+Linux provides different ways of starting and stopping these services. In other
+words, while Linux includes web browsers to view web pages, it can also be the
+computer that serves up web pages to others. Popular server features include
+web, mail, database, printer, fi le, DNS, and DHCP servers.
+■ Programming tools — A wide variety of programming utilities for creating
+applications and libraries for implementing specialty interfaces are available
+with Linux.
+
+5
+Chapter 1: Starting with Linux
+1
+As someone managing Linux systems, you need to learn how to work with those features just
+described. While many features can be managed using graphical interfaces, an understanding
+of the shell command line is critical for someone administering Linux systems.
+Modern Linux systems now go way beyond what the fi rst UNIX systems (on which
+Linux was based) could do. Advanced features in Linux, often used in large enterprises,
+include the following:
+■ Clustering — Linux can be confi gured to work in clusters so that multiple systems can appear as one system to the outside world. Services can be confi gured
+to pass back and forth between cluster nodes, while appearing to those using the
+services that they are running without interruption.
+■ Virtualization — To manage computing resources more effi ciently, Linux can
+run as a virtualization host. On that host, you could run other Linux systems,
+Microsoft Windows, BSD, or other operating systems as virtual guests. To the
+outside world, each of those virtual guests appears as a separate computer.
+KVM and Xen are two technologies in Linux for creating virtual hosts. Red Hat
+Enterprise Virtualization is a product from Red Hat, Inc. for managing multiple
+virtualization hosts, virtual guests, and storage.
+■ Real-time computing — Linux can be confi gured for real-time computing, where
+high-priority processes can expect fast, predictable attention.
+■ Specialized storage — Instead of just storing data on the computer’s hard disk,
+a variety of specialized local and networked storage interfaces are available in
+Linux. Shared storage devices available in Linux include iSCSI, Fibre Channel,
+and Infi niband.
+Many of these advanced topics are not covered in this book. However, the features covered
+here for using the shell, working with disks, starting and stopping services, and confi guring
+a variety of servers should serve as a foundation for working with those advanced features.
+
+
+Understanding How Linux Distributions Emerged
+Having bundles of source code fl oating around the Internet that could be compiled and
+packaged into a Linux system worked well for geeks. More casual Linux users, however,
+needed a simpler way to put together a Linux system. To respond to that need, some of
+the best geeks began building their own Linux distributions.
+
+A Linux distribution consists of the components needed to create a working Linux
+system and the procedures needed to get those components installed and running.
+Technically, Linux is really just what is referred to as the kernel. Before the kernel can
+be useful, you must have other software such as basic commands (GNU utilities), services you want to offer (such as remote login or web servers), and possibly a desktop
+interface and graphical applications. Then, you must be able to gather all that together
+and install it on your computer’s hard disk.
+
+Slackware (http://www.slackware.org) is one of the oldest Linux distributions still
+being developed today. It made Linux friendly for less technical users by distributing
+software already compiled and grouped into packages (those packages of software components were called tarballs). You would use basic Linux commands then to do things
+like format your disk, enable swap, and create user accounts.
+Before long, many other Linux distributions were created. Some Linux distributions
+were created to meet special needs, such as KNOPPIX (a live CD Linux), Gentoo (a cool
+customizable Linux), and Mandrake (later called Mandriva, which was one of several
+desktop Linux distributions). But two major distributions rose to become the foundation
+for many other distributions: Red Hat Linux and Debian.
+
+Choosing a Red Hat distribution
+When Red Hat Linux appeared in the late 1990s, it quickly became the most popular
+Linux distribution for several reasons:
+■ RPM package management — While tarballs are fi ne for dropping software on
+your computer, they don’t work as well when you want to update, remove, or even
+fi nd out about that software. Red Hat created the RPM packaging format so a software package could contain not only the fi les to be shared, but also information
+about the package version, who created it, which fi les were documentation or confi guration fi les, and when it was created. By installing software packaged in RPM
+format, that information about each software package could be stored in a local
+RPM database. It became easy to fi nd what was installed, update it, or remove it.
+■ Simple installation — The anaconda installer made it much simpler to install
+Linux. As a user, you could step through some simple questions, in most cases
+accepting defaults, to install Red Hat Linux.
+■ Graphical administration — Red Hat added simple graphical tools to confi gure
+printers, add users, set time and date, and do other basic administrative tasks.
+As a result, desktop users could use a Linux system without even having to run
+commands.
+For years, Red Hat Linux was the preferred Linux distribution for both Linux professionals and enthusiasts. Red Hat, Inc. gave away the source code, as well as the compiled,
+ready-to-run versions of Red Hat Linux (referred to as the binaries). But as the needs of
+their Linux community users and big-ticket customers began to move further apart, Red
+Hat abandoned Red Hat Linux and began developing two operating systems instead:
+Red Hat Enterprise Linux and Fedora
+
+Using Red Hat Enterprise Linux
+In March 2012, Red Hat, Inc. became the fi rst open source software company to bring in
+more than $1 billion in yearly revenue. It achieved that goal by building a set of products
+around Red Hat Enterprise Linux (RHEL) that would suit the needs of the most demanding enterprise computing environments.
+
+While other Linux distributions focused on desktop systems or small business computing, RHEL worked on those features needed to handle mission-critical applications for
+business and government. It built systems that could speed transactions for the world’s
+largest fi nancial exchanges and be deployed as clusters and virtual hosts.
+Instead of just selling RHEL, Red Hat offers an ecosystem of benefi ts for Linux customers
+to draw on. To use RHEL, customers buy subscriptions that they can use to deploy any
+version of RHEL they desire. If they decommission a RHEL system, they can use the subscription to deploy another system.
+Different levels of support are available for RHEL, depending on customer needs.
+Customers can be assured that, along with support, they can get hardware and thirdparty software that is certifi ed to work with RHEL. They can get Red Hat consultants
+and engineers to help them put together the computing environments they need. They
+can also get training and certifi cation exams for their employees (see the discussion of
+RHCE certifi cation later in this chapter).
+Red Hat has also added other products as natural extensions to Red Hat Enterprise
+Linux. JBoss is a middleware product for deploying Java-based applications to the
+Internet or company intranets. Red Hat Enterprise Virtualization is comprised of the virtualization hosts, managers, and guest computers that allow you to install, run, manage,
+migrate, and decommission huge virtual computing environments.
+There are those who have tried to clone RHEL, using the freely available RHEL source
+code, rebuilding and rebranding it. CentOS is a community-sponsored Linux distribution
+that is built from RHEL source code. Oracle Linux is likewise built from source code for
+RHEL but currently offers an incompatible kernel. Despite that, however, RHEL is still
+the runaway leading enterprise computer operating system.
+
+I’ve chosen to use Red Hat Enterprise Linux for many of the examples in this book
+because, if you want a career working on Linux systems, there is a huge demand for
+those who can administer RHEL systems. If you are starting out with Linux, however,
+Fedora can provide an excellent, free entry point to the same skills you need to use and
+administer RHEL systems.
+
+Using Fedora
+While RHEL is the commercial, stable, supported Linux distribution, Fedora is the free,
+cutting-edge Linux distribution that is sponsored by Red Hat, Inc. Fedora is the Linux
+system Red Hat uses to engage the Linux development community and encourage those
+who want a free Linux for personal use.
+
+Choosing Ubuntu or another Debian distribution
+Like Red Hat Linux, the Debian GNU/Linux distribution was an early Linux distribution
+that excelled at packaging and managing software. Debian uses deb packaging format
+and tools to manage all of the software packages on its systems. Debian also has a reputation for stability.
+
+RHCSA topics
+As noted earlier, RHCSA exam topics cover basic system administration skills. These are
+the current topics listed at the RHCSA exam objectives site (again, check the exam objectives site in case they change):
+■ Understand essential tools — You are expected to have a working knowledge of
+the command shell (bash), including how to use proper command syntax and do
+input/output redirection (< > >>). You need to know how to log in to remote
+and local systems. Expect to have to create, move, copy, link, delete, and change
+permission and ownership on fi les. Likewise, you should know how to look up
+information on man pages and /usr/share/doc.
+■ Operate running systems — In this category, you must understand the Linux
+boot process, go into single-user mode, shut down, reboot, and change run levels. You must be able to start and stop virtual machines and network services, as
+well as fi nd and interpret log fi les.
+■ Configure local storage — Setting up disk partitions includes creating physical volumes and confi guring them to be used for Logical Volume Management
+(LVM) or encryption (LUKS). You should also be able to set up those partitions as
+fi lesystems or swap space that can be mounted or enabled at boot time.
+■ Create and configure filesystems — Create and automatically mount different
+kinds of fi lesystems, including regular Linux fi lesystems (ext2, ext3, or ext4),
+LUKS-encrypted fi lesystems, and network fi lesystems (NFS and CIFS). Create
+
+23
+Chapter 1: Starting with Linux
+1
+collaborative directories using the set group ID bit feature and Access Control
+Lists (ACL). You must also be able to use LVM to extend the size of a logical
+volume.
+■ Deploy, configure, and maintain systems — This covers a range of topics,
+including confi guring networking, creating cron tasks, setting the default run
+level, and installing RHEL systems. You must also be able to confi gure a simple
+HTTP and FTP server. For software packages, you must be able to install packages from Red Hat Network, a remote repository, or the local fi lesystem. Finally,
+you must be able to properly install a new kernel and choose that or some other
+kernel to boot up when the system starts.
+■ Manage users and groups — You must know how to add, delete, and change
+user and group accounts. Another topic you should know is password aging,
+using the chage command. You must also know how to confi gure a system to
+authenticate by connecting to an LDAP directory server.
+■ Manage security — You must have a basic understanding of how to set up a fi rewall (system-confi g-fi rewall or iptables) and how to use SELinux.
+Most of these topics are covered in this book. Refer to Red Hat documentation
+(http://docs.redhat.com) under the Red Hat Enterprise Linux heading for descriptions of features not found in this book. In particular, the Deployment Guide contains
+descriptions of many of the RHCSA-related topics.
+RHCE topics
+RHCE exam topics cover more advanced server confi guration, along with a variety of
+security features for securing those servers. Again, check the RHCE exam objectives site
+for the most up-to-date information on topics you should study for the exam.
+The system confi guration and management requirement for the RHCE exam covers a
+range of topics, including the following:
+■ Route IP traffic — Set up static routes to specifi c network addresses.
+■ Firewalls — Block or allow traffi c to selected ports on your system that offer
+services such as web, FTP, and NFS, as well as block or allow access to services
+based on the originator's IP address.
+■ Kernel tunables — Set kernel tunable parameters using the /etc/sysctl.conf
+fi le and the sysctl command.
+■ Configure iSCSI — Set up system as an iSCSI initiator that mounts an iSCSI target at boot time.
+■ System reports — Use features such as sar to report on system use of memory,
+disk access, network traffi c, and processor utilization.
+■ Shell scripting — Create a simple shell script to take input and produce output in
+various ways.
+
+24
+Part I: Getting Started
+■ Remote logging — Confi gure the rsyslogd facility to gather log messages and
+distribute them to a remote logging server. Also, confi gure a remote logging
+server facility to gather log messages from logging clients.
+■ SELinux — With Security Enhanced Linux in Enforcing mode, make sure that
+all server confi gurations described in the next section are properly secured with
+SELinux.
+For each of the network services in the list that follows, make sure that you can go
+through the steps to install packages required by the service, set up SELinux to allow
+access to the service, set the service to start at boot time, secure the service by host or
+by user (using iptables, TCP wrappers, or features provided by the service itself), and
+confi gure it for basic operation. These are the services:
+■ Web server — Confi gure an Apache (HTTP/HTTPS) server. You must be able
+to set up a virtual host, deploy a CGI script, use private directories, and allow a
+particular Linux group to manage the content.
+■ DNS server — Set up a DNS server (bind package) to act as a caching-only name
+server that can forward DNS queries to another DNS server. No need to confi gure
+master or slave zones.
+■ FTP server — Set up an FTP server to provide anonymous downloads.
+■ NFS server — Confi gure an NFS server to share specifi c directories to specifi c
+client systems so they can be used for group collaboration.
+■ Windows file sharing server — Set up Linux (Samba) to provide SMB shares to
+specifi c hosts and users. Confi gure the shares for group collaboration.
+■ Mail server — Confi gure postfi x or sendmail to accept incoming mail from outside of the local host. Relay mail to a smart host.
+■ Secure Shell server — Set up the SSH service (sshd) to allow remote login to
+your local system as well as key-based authentication. Otherwise, confi gure the
+sshd.conf fi le as needed.
+■ Network Time server — Confi gure a Network Time Protocol server (ntpd) to
+synchronize time with other NTP peers.
+
+
+=============================================================================================================
+
+
+Creating the Perfect Linux Desktop
+The goal of this chapter is to familiarize you with the concepts related to Linux desktop systems,
+and then give you tips for working with a Linux desktop. You will:
+■ Step through the desktop features and technologies that are available in Linux
+■ Tour the major features of the GNOME desktop environment
+■ Learn tips and tricks for getting the most out of your GNOME desktop experience
+
+Because the current release of Fedora uses the GNOME 3 interface, most of the procedures described here will work with other Linux distributions that have GNOME 3
+available. 
+
+So, how does an understanding of how desktop interfaces work in Linux help you when
+it comes to using Linux? Here are some ways:
+■ Because Linux desktop environments are not required to run a Linux system,
+a Linux system may have been installed without a desktop. It might offer only
+a plain-text, command-line interface. You can choose to add a desktop later.
+Once it is installed, you can choose whether to start up the desktop when your
+computer boots or start it as needed.
+■ For a very lightweight Linux system, such as one meant to run on less powerful
+computers, you can choose an effi cient, though less feature-rich, window manager (such a twm or fluxbox) or a lightweight desktop environment (such as
+LXDE or Xfce).
+■ For more robust computers, you can choose more powerful desktop environments (such as GNOME and KDE) that can do such things as watch for events to
+happen (such as inserting a USB fl ash drive) and respond to those events (such
+as opening a window to view the contents of the drive).
+■ You can have multiple desktop environments installed and you can choose which
+one to launch when you log in. In this way, different users on the same computer
+can use different desktop environments.
+Many different desktop environments are available to choose from in Linux. Here are a
+few examples:
+■ GNOME—GNOME is the default desktop environment for Fedora, Red Hat
+Enterprise Linux, and many others. It is thought of as a professional desktop
+environment, focusing on stability more than fancy effects.
+
+30
+Part I: Getting Started
+■ K Desktop Environment—KDE is probably the second most popular desktop
+environment for Linux. It has more bells and whistles than GNOME, and offers
+more integrated applications. KDE is also available with Fedora, RHEL, Ubuntu,
+and many other Linux systems.
+■ Xfce—The Xfce desktop was one of the fi rst lightweight desktop environments.
+It is good to use on older or less powerful computers. It is available with RHEL,
+Fedora, Ubuntu, and other Linux distributions.
+■ LXDE—The Lightweight X11 Desktop Environment (LXDE) was designed to be
+a fast-performing, energy-saving desktop environment. Often, LXDE is used on
+less-expensive devices, such as netbook computers, and on live media (such as
+a live CD or live USB stick). It is the default desktop for the KNOPPIX live CD
+distribution. Although LXDE is not included with RHEL, you can try it with 
+
+GNOME was originally designed to resemble the MAC OS desktop, while KDE was meant
+to emulate the Windows desktop environment. Because it is the most popular desktop
+environment, and the one most often used in business Linux systems, most desktop
+procedures and exercises in this book use the GNOME desktop
+
+ON INSTALLING FEDORA (LIVE CD OR PERMANENT)
+Begin using the desktop. For Fedora, the live CD boots directly to a GNOME
+3 desktop by default. In some cases, if the specs of the computer are not up to
+requirements, Fedora will fall back to GNOME 2 instead
+
+Navigating with the mouse
+To get started, try navigating the GNOME 3 desktop with your mouse:
+1. Toggle activities and windows. Move your mouse cursor to the upper-left corner
+of the screen, near the Activities button. Each time you move there, your screen
+changes between showing you the windows you are actively using and a set of
+available Activities. (This has the same effect as pressing the Windows button.)
+2. Open windows from applications bar. Click to open some applications from the
+Dash on the left (Firefox, File Manager, Shotwell, or others). Move the mouse to
+the upper-left corner again and toggle between showing all active windows minimized (Overview screen) and showing them overlapping (full-sized). Figure 2.2
+shows an example of the miniature windows view.
+3. Open applications from Applications list. From the Overview screen, select the
+Application button near the top of the page. The view changes to a set of icons
+representing the applications installed on your system, as shown in Figure 2.3.
+
+View additional applications. From the Applications screen, there are several
+ways to change the view of your applications, as well as different ways to
+launch them:
+■ Scroll—To see icons representing applications that are not on the screen, use
+the mouse to grab and move the scrollbar on the right. If you have a wheel
+mouse, you can use that instead to scroll the icons.
+■ Application groups—Select an application group on the right (Accessories,
+Games, Graphics, and so on) to see applications that are in only that group.
+■ Launching an application—To start the application you want, left-click on its
+icon to open the application in the current workspace. If you have a middle
+mouse button, you can click it on an application to open it in a new workspace. Right-click to open a menu displaying open instances of this application you can select, an option to open a New Window selection, and an option
+to add or remove the application from Favorites (so the application's icon
+appears on the Dash). Figure 2.4 shows an example of the menu
+
+Open additional applications. Start up additional applications. Notice that as
+you open a new application, an icon representing that application appears in the
+Dash bar on the left. Here are some other ways to start applications:
+■ Application icon—Click any application icon to open that application.
+■ Drop Dash icons on workspace—From the Windows view, you can drag any
+application icon from the Dash by holding the Ctrl key and dragging that icon
+to any of the miniature workspaces on the right.
+6. Use multiple workspaces. Move the mouse to the upper-left corner again to
+show a minimized view of all windows. Notice all the applications on the
+right jammed into a small representation of one workspace while an additional
+
+workspace is empty. Drag-and-drop two of the windows to the empty desktop
+space. Figure 2.5 shows what the small workspaces look like. Notice that an
+additional empty workspace is created each time the last empty one is used. You
+can drag-and-drop the miniature windows between any workspace, and then
+select the workspace to view it
+
+7. Use the window menu. Move the mouse to the upper-left corner of the screen to
+return to the active workspace (large window view). Right-click the title bar on a
+window to view the window menu. Try these actions from that menu:
+■ Minimize—Remove window temporarily from view.
+■ Maximize—Expand window to maximum size.
+■ Move—Change window to moving mode. Moving your mouse moves the window. Click to fi x the window to a spot.
+■ Resize—Change the window to resize mode. Moving your mouse resizes the
+window. Click to keep the size.
+■ Workspaces selections—Several selections let you use workspaces in different ways. Select to make the window always on top of other windows, visible
+on every workspace, or only on the current workspace. Or move the window
+to another workspace, the one above or the one below.
+
+Navigating with the keyboard
+If you prefer to keep your hands on the keyboard, you can work with the GNOME 3 desktop directly from the keyboard in a number of ways, including the following:
+■ Windows key—Press the Windows key on the keyboard. On most PC keyboards,
+this is the key with the Microsoft Windows logo on it next to the Alt key. This
+toggles the mini-window (Overview) and active-window (current workspace)
+views. Many people use this key a lot.
+■ Select different views—From the Windows or Applications view, hold
+Ctrl+Alt+Tab to see a menu of the different views (see Figure 2.6). Still holding
+the Ctrl+Alt keys, press Tab again to highlight one of the following icons from
+the menu and release to select it:
+■ Top Bar—Keeps the current view.
+■ Dash—Highlights the fi rst application in the application bar on the left. Use
+arrow keys to move up and down that menu and press Enter to open the highlighted application.
+■ Windows—Selects the Windows view.
+■ Applications—Selects the Applications view.
+■ Search—Highlights the search box. Type a few letters to show only icons for
+applications that contain the letters you type. When you have typed enough
+letters to uniquely identify the application you want, press Enter to launch the
+application.
+
+
+■ Select an active window—Return to any of your workspaces (press the Windows
+key if you are not already on an active workspace). Press Alt+Tab to see a list of
+all active windows (see Figure 2.7). Continue to hold the Alt key as you press the
+Tab key (or right or left arrow keys) to highlight the application you want from
+the list of active desktop application windows. If an application has multiple windows open, press Alt+` (backtick, located above the Tab key) to choose among
+those sub-windows. Release the Alt key to select it.
+
+Launch a command or application—From any active workspace, you can launch
+a Linux command or a graphical application. 
+
+
+
+Here are some suggestions for confi guring a GNOME 3 desktop:
+■ Configure networking—A wired network connection is often confi gured
+automatically when you boot up your Fedora system. For wireless, you probably
+have to select your wireless network and add a password when prompted. An
+icon in the top bar lets you do any wired or wireless network confi guration you
+need to do. Refer to Chapter 14, “Administering Networking,” for further information on confi guring networking.
+■ Personal settings—Tools in this group let you change your desktop background
+(Background), use different online accounts (Online Accounts), and set your language and date and currency format based on region (Region and Language) and
+screen locking (Screen). To change your background, open the System Settings
+window, select Background, and then select from the available Wallpapers.
+To add your own Background, download a wallpaper image you like to your
+Pictures folder, and then click the Wallpapers box to change it to Pictures folder
+and choose the image you want.
+■ Bluetooth—If your computer has Bluetooth hardware, you can enable that device
+to communicate with other Bluetooth devices.
+■ Printers—Instead of using the System Settings window to confi gure a printer,
+refer to Chapter 16, “Confi guring a Print server,” for information on setting up a
+printer using the CUPS service.
+■ Sound—Click the Sound settings button to adjust sound input and output devices
+on your system.
+■ Removable media—To confi gure what happens when CDs, DVDs, music players,
+or other removable media are inserted into your computer, select the Removable
+Media icon. See Chapter 8, “Learning System Administration,” for information on
+confi guring removable media.
+
+Extending the GNOME 3 desktop 
+Using GNOME shell extensions
+Using the GNOME Tweak Tool
+
+
+Starting with desktop applications
+The Fedora GNOME 3 desktop live CD comes with some cool applications you can start
+using immediately
+Managing files and folders with Nautilus
+To move, copy, delete, rename, and otherwise organize fi les and folders in GNOME 3,
+you can use the Nautilus fi le manager
+
+
+Using the GNOME 2 Desktop
+To use your GNOME desktop, you should become familiar with the following
+components:
+■ Metacity (window manager)—The default window manager for GNOME 2.2 is
+Metacity. Metacity confi guration options let you control such things as themes,
+window borders, and controls used on your desktop.
+■ Compiz (window manager)—You can enable this window manager in GNOME
+to provide 3D desktop effects.
+■ Nautilus (file manager/graphical shell)—When you open a folder (by doubleclicking the Home icon on your desktop, for example), the Nautilus window

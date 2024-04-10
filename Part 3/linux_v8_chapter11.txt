@@ -1,0 +1,179 @@
+Creating User Accounts
+Every person who uses your Linux system should have a separate user account.
+
+You can add user accounts to most Linux systems in several ways. Fedora and Red Hat
+Enterprise Linux systems use the User Manager window (system-config-users) utility on the
+desktop.
+
+You are now ready to begin adding a new user account to your Linux system. Here are
+the fi elds you need to fi ll in: User Name, Full Name,...
+
+Select OK to add the user to the system. An entry for the new user account is added to
+the /etc/passwd fi le and the new group account to the /etc/group fi le.
+
+Most of the information you set before can be changed from the User Data tab. However, select
+the Account Info if you want the account to expire on a particular date or to lock the password
+so, temporarily, no one can log in as the user. On the Password Info tab, you can set when a
+password expires so you can force users to change their passwords after a set length of time.
+The Groups tab enables you to select check boxes to let a user belong to different groups.
+Everything described with the User Manager window can be done from the command
+line as well.
+
+The most straightforward method for creating a new user from the shell is the useradd
+command. 
+
+The only required parameter is the login name of the user, but you probably want to
+include some additional information ahead of it. Each item of account information is preceded by a single-letter option code with a dash in front of it. The options available with
+useradd include the following:
+
+Let’s create an account for a new user. The user’s full name is Sara Green with a login
+name of sara. To begin, become root user and then type the following command:
+# useradd -c "Sara Green" sara
+
+Next, set the initial password for sara using the passwd command. You’re prompted to
+type the password twice:
+# passwd sara
+
+In creating the account for Sara, the useradd command performs several actions:
+■ Reads the /etc/login.defs and /etc/default/useradd fi les to get default
+values to use when creating accounts.
+■ Checks command-line parameters to fi nd out which default values to override.
+■ Creates a new user entry in the /etc/passwd and /etc/shadow fi les based on
+the default values and command-line parameters.
+■ Creates any new group entries in the /etc/group fi le. (Fedora creates a group
+using the new user’s name.)
+■ Creates a home directory, based on the user’s name, in the /home directory.
+■ Copies any fi les located within the /etc/skel directory to the new home directory. This usually includes login and application startup scripts.
+
+Here’s an example that uses a few more options to do so:
+# useradd -g users -G wheel,apache -s /bin/tcsh -c "Sara Green" sara
+
+In this case, useradd is told to make users the primary group sara belongs to (-g), add
+her to the wheel and apache groups, and assign tcsh as her primary command shell (-s).
+A home directory in /home under the user’s name (/home/sara) is created by default. This
+command line results in a line similar to the following being added to the /etc/passwd fi le:
+sara:x:502:507:Sara Green:/home/sara:/bin/tcsh
+
+Each line in the /etc/passwd fi le represents a single user account record. Each fi eld
+is separated from the next by a colon (:) character. The fi eld’s position in the sequence
+determines what it is. As you can see, the login name is fi rst. The password fi eld contains an x because, in this example, the shadow password fi le is used to store encrypted
+password data (in /etc/shadow).
+The user ID selected by useradd is 502. The primary group ID is 507, which corresponds
+to a private sara group in the /etc/group fi le. The comment fi eld was correctly set to
+Sara Green, the home directory was automatically assigned as /home/sara, and the command shell was assigned as /bin/tcsh, exactly as specifi ed with the useradd options.
+By leaving out many of the options (as I did in the fi rst useradd example), defaults are
+assigned in most cases. 
+
+The /etc/group fi le holds information about the different groups on your Linux system
+and the users who belong to them. Groups are useful for enabling multiple users to share
+access to the same fi les while denying access to others. Here is the /etc/group entry
+created for sara:
+sara:x:507:
+
+
+Setting user defaults
+The useradd command determines the default values for new accounts by reading the
+/etc/login.defs and /etc/default/useradd fi les. You can modify those defaults by
+editing the fi les manually with a standard text editor.
+
+If you want to view other default settings, you can fi nd them in the /etc/default
+/useradd fi le. Another way to see default settings is to type the useradd command
+with the -D option, as follows:
+# useradd -D
+
+You can also use the -D option to change defaults. When run with this fl ag, useradd
+refrains from actually creating a new user account; instead, it saves any additionally supplied
+options as the new default values in /etc/default/useradd. Not all useradd options can
+be used in conjunction with the -D option. You can use only the fi ve options listed next.
+page260
+
+To set any of the defaults, give the -D option fi rst, and then add the defaults you want to
+set. For example, to set the default home directory location to /home/everyone and the
+default shell to /bin/tcsh, type the following:
+# useradd -D -b /home/everyone -s /bin/tcsh
+
+Modifying users with usermod
+The usermod command provides a simple and straightforward method for changing
+account parameters. Many of the options available with it mirror those found in
+useradd
+
+Deleting users with userdel
+Just as usermod is used to modify user settings and useradd is used to create users,
+userdel is used to remove users. The following command removes the user chris:
+# userdel -r chris
+
+Here, the user chris is removed from the /etc/password fi le. The –r option removes
+the user’s home directory as well. If you choose not to use –r, as follows, the home
+directory for chris is not removed:
+# userdel chris
+
+Before you delete the user, you may want to run a find command to fi nd all fi les that
+would be left behind by the user. After you delete the user, you could search on user ID
+to fi nd fi les left behind. Here are two find commands to do those things:
+# find / -user chris -ls
+# find / -uid 504 -ls
+
+Because fi les that are not assigned to any username are considered to be a security risk,
+it is a good idea to fi nd those fi les and assign them to a real user account. Here’s an
+example of a find command that fi nds all fi les in the fi le system that are not associated
+with any user (the fi les are listed by UID):
+# find / -nouser -ls
+
+Understanding Group Accounts
+Group accounts are useful if you want to share a set of fi les with multiple users. You can
+create a group and change the set of fi les to be associated with that group. The root user
+can assign users to that group so they can have access to fi les based on that group’s permission. Consider the following fi le and directory:
+$ ls -ld /var/salesdocs /var/salesdocs/file.txt
+Looking at permissions on the directory /var/salesdocs (rwxrwxr-x), you see the
+second set of rwx shows that any member of the group (sales) has permission to read
+fi les in that directory (r is read), create and delete fi les from that directory (w is write),
+and change to that directory (x is execute). The fi le named file.txt can be read and
+changed by members of the sales group (based on the second rw-).
+
+Using group accounts
+Every user is assigned to a primary group. In Fedora and RHEL, by default, that group is
+a new group with the same name as the user. So if the user were named sara, the group
+assigned to her would also be sara. The primary group is indicated by the number in the
+third fi eld of each entry in the /etc/passwd fi le, for example, the group ID 507 here:
+sara:x:502:507:Sara Green:/home/sara:/bin/tcsh
+That entry points to an entry in the /etc/group fi le:
+sara:x:507
+page 263
+
+Group ID numbers from 0 through 499 are assigned to special administrative groups. For
+example, the root group is associated with GID 0. Regular groups begin at 500 for Red
+Hat Enterprise Linux and Fedora. On the fi rst UNIX systems, GIDs went from 0 to 99.
+Other Linux systems reserve GIDs between 0 to 1,000 for administrative groups.
+Here are some examples of creating a group account with the groupadd command:
+# groupadd kings
+# groupadd -g 325 jokers
+
+In the examples just shown, the group named kings is created with the next available
+group ID. After that, the group jokers is created using the 325 group ID
+
+To change a group later, use the groupmod command. For example:
+# groupmod -g 330 jokers
+# groupmod -n jacks jokers
+In the fi rst example, the group ID for jokers is changed to 330. In the second, the name jokers is changed to jacks. 
+
+Setting permissions with Access Control Lists; page 307
+
+Creating group collaboration directories (set GID bit)
+By creating a set GID directory, any fi les created in that directory are assigned to the
+group assigned to the directory itself. The idea is to have a directory where all members
+of a group can share fi les but still protect them from other users
+1. Create a group to use for collaboration:
+# groupadd -g 301 sales
+2. Add some users to the group that you want to be able to share fi les (I used mary):
+# usermod -aG sales mary
+3. Create the collaborative directory:
+# mkdir /mnt/salestools
+page 313
+
+Centralizing User Accounts
+Although the default way of authenticating users in Linux is to check user information
+against the /etc/passwd fi le and passwords from the /etc/shadow fi le, there are other
+ways to do authentication as well. In most large enterprises, user account information is
+stored in a centralized authentication server, so each time you install a new Linux system, instead of adding user accounts to that system, you have the Linux system query
+the authentication server when someone tries to log in
+

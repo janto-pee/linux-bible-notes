@@ -1,0 +1,131 @@
+Understanding Linux RPM Software Packaging
+On the fi rst Linux systems, if you wanted to add additional software you would grab the
+source code from a project that produced it, compile it into runnable binaries, and drop
+it onto your computer. If you were lucky, someone would have already compiled it in a
+form that would run on your computer.
+
+The form of the package could be a tarball, containing executable fi les (commands), documentation, confi guration fi les, and libraries. (A tarball is a single fi le in which multiple
+fi les are gathered together for convenient storage or distribution.) When you install software from a tarball, the fi les from that tarball might be spread across your Linux system
+in appropriate directories (/usr/share/man, /etc, /bin, and /lib, to name a few).
+While it is easy to create a tarball and just drop a set of software onto your Linux
+system, this method of installing software makes it diffi cult to:
+
+■ Get dependent software — You would need to know if the software you were
+installing depended on other software being installed for your software to work.
+Then you would have to track down that software and install that too (which
+might itself have some dependencies).
+■ List the software — Even if you knew the name of the command, you might
+not know where its documentation or confi guration fi les were located when you
+looked for it later.
+■ Remove the software — Unless you kept the original tarball or a list of fi les, you
+wouldn’t know where all the fi les were when it came time to remove them. Even
+if you knew, you would have to remove each one individually.
+■ Update the software — Tarballs are not designed to hold metadata about the
+contents they contain. Once the contents of a tarball are installed, you may not
+have a way to tell what version of the software you are using, making it diffi cult
+to track down bugs and get new versions of your software.
+To deal with these problems, packages progressed from simple tarballs to more complex
+packaging.
+
+most Linux distributions went to one of two different packaging formats — DEB
+and RPM:
+■ DEB (.deb) packaging — The Debian GNU/Linux project created .deb packaging, which is used by Debian and other distributions based on Debian (Ubuntu,
+Linux Mint, KNOPPIX, and so on). Using tools such as apt-get and dpkg, Linux
+distributions could install, manage, upgrade, and remove software.
+■ RPM (.rpm) packaging — Originally named Red Hat Package Manager but later
+recursively renamed RPM Package Manager, RPM is the preferred package
+format for SUSE, Red Hat distributions (RHEL and Fedora), and those based on Red
+Hat distributions (CentOS, Oracle Linux, and so on). The rpm command was the
+fi rst tool to manage RPMs, but later yum was added to enhance the RPM facility
+
+Understanding RPM packaging
+An RPM package is a consolidation of fi les needed to provide a feature, such as a word
+processor, a photo viewer, or a fi le server. Inside an RPM can be the commands, confi guration fi les, and documentation that make up the software feature. However, an RPM fi le
+also contains metadata that stores information about the contents of that package, where
+the package came from, what it needs to run, and other information.
+
+# rpm -q firefox
+From this, you can tell that the basename of the package is firefox. 
+
+To fi nd out more about what is inside an RPM package, you can use options other than
+the rpm command to query that local RPM database. For example:
+# rpm -qi firefox
+Besides the information you got from the package name itself, the -qi (query information)
+option lets you see who built the package (Red Hat, Inc.), when it was built, and when it
+was installed. The group the package is in (Applications/Internet), its size, and the licensing are listed. To fi nd out more about the package, the URL points to the project page on
+the Internet and the Summary and Description tell you what the package is used for.
+
+Managing RPM Packages with YUM
+The YellowDog Updater Modifi ed (YUM) project set out to solve the headache of managing dependencies with RPM packages. Its major contribution was to stop thinking about
+RPM packages as individual components and think of them as parts of larger software
+repositories.
+
+Understanding how yum works
+The basic syntax of the yum command is:
+# yum [options] command
+Using that syntax, you can fi nd packages, see package information, fi nd out about package groups, update packages, or delete packages, to name a few features. With the YUM
+repository and confi guration in place, a user can install a package by simply typing
+something like this:
+# yum install firefox
+
+The user only needs to know the package name (which could be queried in different
+ways, as described in the "Searching for packages" section later in this chapter). The
+YUM facility fi nds the latest version of that package available from the repository, downloads it to the local system, and installs it.
+
+1. Checking /etc/yum.conf
+When any yum command starts, it checks the fi le /etc/yum.conf for default settings.
+The /etc/yum.conf fi le is the basic YUM confi guration fi le. 
+Settings in yum.conf tell YUM where to keep cache fi les (/var/cache/yum) and log
+entries (/var/log/yum.log), and whether or not to keep cache fi les around after a
+package is installed (0 means no). You can raise the debuglevel value in the yum.conf
+fi le to above 2 if you want to see more details in your log fi les.
+
+Next, you can see if the exact architecture (x86, x86_64, and so on) should be matched
+when choosing packages to install (1 means yes) and whether or not to use plugins
+(1 means yes) to allow for things such as blacklists, white lists, or connecting to Red Hat
+Network for packages.
+Finally, gpgcheck says whether or not to validate each package against a key you
+receive from those who built the RPM. 
+
+2. Checking /etc/sysconfig/rhn/up2date (RHEL only)
+
+3. Checking /etc/yum.repos.d/*.repo files
+Software repositories can be enabled by dropping fi les ending in .repo into the
+/etc/yum.repos.d/ directory that point to the location of one or more repositories. 
+
+4. Downloading RPM packages and metadata from a YUM repository
+After yum knows the locations of the repositories, metadata from the repodata directory
+of each repository is downloaded to the local system. In fact, it is the existence of a
+repodata directory in a directory of RPMs that indicates that it is a yum repository.
+
+5. RPM packages installed to Linux file system
+Once all the necessary packages are downloaded to the cache directories, yum runs rpm
+commands to install each package. If a package contains preinstall scripts (which might
+create a special user account or make directories), those scripts are run. The contents
+of the packages are copied to the fi lesystem (commands, confi g fi les, docs, and so on). 
+
+6. Store YUM repository metadata to local RPM database
+The metadata contained in each RPM package that is installed is ultimately copied into
+the local RPM database. The RPM database is contained in fi les that are stored in the
+/var/lib/rpm directory
+
+Managing software with the YUM command
+The yum command has dozens of subcommands you can use to work with RPM packages on your system.
+
+Searching for packages
+Using different searching subcommands, you can fi nd packages based on key words,
+package contents, or other attributes.
+
+# yum search editor
+
+
+
+
+
+
+
+
+
+
+
+

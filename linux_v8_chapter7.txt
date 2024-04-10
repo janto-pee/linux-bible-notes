@@ -1,0 +1,22 @@
+A shell script is a group of commands, functions, variables, or just about anything else you can
+use from a shell. These items are typed into a plaintext fi le. That fi le can then be run as a
+command. Most Linux systems use system initialization shell scripts during system startup to
+run commands needed to get services going. You can create your own shell scripts to automate
+the tasks you need to do regularly
+
+You learn how shell scripts are responsible for the messages that scroll by on
+the system console during booting and how simple scripts can be harnessed to a scheduling
+facility (such as cron or at) to simplify administrative tasks.
+
+Have you ever had a task that you needed to do over and over that took a lot of typing on the
+command line? Do you ever think to yourself, “Wow, I wish there were just one command
+I could type to do all of this”? Maybe a shell script is what you’re after.
+Shell scripts are the equivalent of batch fi les in MS-DOS, and can contain long lists of commands, complex fl ow control, arithmetic evaluations, user-defi ned variables, user-defi ned functions, and sophisticated condition testing. Shell scripts are capable of handling everything from
+simple one-line commands to something as complex as starting up your Linux system.
+
+In fact, as you will read in this chapter, Linux systems do just that. They use shell scripts
+to check and mount all your fi le systems, set up your consoles, confi gure your network,
+launch all your system services, and eventually provide you with your login screen.
+While dozens of different shells are available in Linux, the default shell is called bash,
+the Bourne Again SHell.
+
